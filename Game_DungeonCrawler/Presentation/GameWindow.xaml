@@ -1,0 +1,191 @@
+﻿<Window x:Class="Game_DungeonCrawler.Presentation.GameWindow"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Game_DungeonCrawler.Presentation"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="800" Background="Blue"
+      Title="GameWindow">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="LineBrush"
+                             StartPoint="0,0"
+                             EndPoint="1,0"
+                             Opacity="50">
+            <GradientStop Color ="MidnightBlue" Offset="0"/>
+            <GradientStop Color="Blue" Offset="0.25"/>
+            <GradientStop Color="LightBlue" Offset="0.5"/>
+        </LinearGradientBrush>
+        <Style x:Name="BorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="5"/>
+        </Style>
+                             
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <!--#region MainDisplay-->
+        <TextBox Grid.Row="0" Grid.Column="1" Background="Blue" 
+                 Foreground="Black" Text="The Simple Adventure S2" 
+                 FontSize="35" TextAlignment="Center"/>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Width="400"
+                       Height="50"
+                       Background="Silver"
+                       Text="Adventurer Unfolding"
+                       FontSize="30"
+                       FontWeight="SemiBold"
+                       FontStyle="Italic"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center"
+                       />
+            <TextBlock Grid.Row="1"
+                x:Name="DescriptionMain" 
+                    Width="450" 
+                    Height="250"
+                    Text="{Binding MsgDis}"
+                    Background="Beige"
+                       />
+            <Border Grid.Row="2">
+                <Grid Background="SandyBrown">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="2" Grid.Row="0" 
+                            Content ="Up" Width="40" Click="Btn_moveU_Click"/>
+                    <Button Grid.Column="2" Grid.Row="1" 
+                            Content="Down" Width="40" Click="Btn_moveL_Click"/>
+                    <Button Grid.Column="3" Grid.Row="0"  
+                            Content="Left" Width="50" Height="50" Click="Btn_moveW_Click"/>
+                    <Button Grid.Column="3" Grid.Row="1"  
+                            Content="Right" Width="50" Height="50" Click="Btn_moveE_Click"/>
+                    <Button Grid.Column="1" Grid.Row="0" 
+                            Content ="Attack" Width="40"/>
+                    <Button Grid.Column="1" Grid.Row="1" 
+                            Content="Block" Width="40"/>
+                    <Button Grid.Column="4" Grid.Row="0" 
+                            Content ="Back" Width="40" Click="Btn_moveS_Click"/>
+                    <Button Grid.Column="4" Grid.Row="1" 
+                            Content="Forward" Width="40" Click="Btn_moveN_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--#endregion-->
+        <!--#region Menu Buttons-->
+        <StackPanel Grid.Row="2" Grid.Column="2">
+            <Button x:Name="newGame" 
+                    Content="New Game" 
+                    Width="100"
+                    Height="24"
+                    Margin="6"/>
+            <Button x:Name="save" 
+                    Content="Save" 
+                    Width="100"
+                    Height="24"
+                    Margin="6"/>
+            <Button x:Name="load" 
+                    Content="Load" 
+                    Width="100"
+                    Height="24"
+                    Margin="6"/>
+            <Button x:Name="quit" 
+                    Content="Quit" 
+                    Width="100"
+                    Height="24"
+                    Margin="6"/>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region CHARACTER INFO-->
+        <Border Grid.Row="2" Grid.Column="0">
+            <Grid Background="Black">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--#region Player Stats Screen-->
+                <TextBox Grid.Row="0" Grid.Column="0" x:Name="TextHealth"
+                    Text="Health" Width="40" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="1" x:Name="Health"
+                    Text="{Binding Player.Health}" Width="90"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Row="1" Grid.Column="0" x:Name="TextXp"
+                    Text="Xp" Width="40" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" x:Name="Xp"
+                    Text="{Binding Player.XP}" 
+                     Width="90" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Row="2" Grid.Column="0" x:Name="TextItem"
+                    Text="Item" Width="40" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="1" x:Name="Item"
+                    Text="{Binding Player.ItemInHand}" Width="90" 
+                     HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBox Grid.Row="3" Grid.Column="0" x:Name="TextClass"
+                    Text="Class" Width="40" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="4" Grid.Column="1" x:Name="Class"
+                    Text="{Binding Player.JobPosition}" Width="90" 
+                     HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <!--#endregion-->
+            </Grid>
+        </Border>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Border BorderBrush="BlanchedAlmond">
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock Background="Brown"
+                               Foreground="Gold"
+                               Text="Current Location Info"
+                               TextAlignment="Center"/>
+                    <Border BorderBrush="Green">
+                        <TextBlock x:Name="AccessableLocal"
+                               Text="{Binding CurrentLocation.LocatName}"
+                               Background="#b5651d"
+                               TextAlignment="Center"
+                               FontSize="15"
+                               Height="30"/>
+                    </Border>
+                    <TextBlock x:Name="DescriptionLocal"
+                               Foreground="Gold"
+                               Text="{Binding CurrentLocation.AreaDescription}"
+                               TextWrapping="Wrap"
+                               Background="#cb4154"
+                               FontSize="20"
+                               Height="380"/>
+                </StackPanel>
+                
+            </Border>
+        </Grid>
+        <!--#endregion-->
+    </Grid>
+</Window>
