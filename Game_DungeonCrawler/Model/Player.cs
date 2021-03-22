@@ -44,9 +44,9 @@ namespace Game_DungeonCrawler.Model
             }
         }
         public int Wealth { get; set; }
-        public ObservableCollection<GameItemQuantity> Inventory { get; set; }
-        public ObservableCollection<GameItemQuantity> Potions { get; set; }
-        public ObservableCollection<GameItemQuantity> Tools { get; set; }
+        public ObservableCollection<GameItemQuantity> Inventory { get { return _inventory; } set { _inventory = value; } }
+        public ObservableCollection<GameItemQuantity> Potions { get { return _potions; } set { _potions = value; } }
+        public ObservableCollection<GameItemQuantity> Tools { get {return _tools; } set {_tools = value; } }
         public int Regen
         {
             get { return _regen; }
@@ -60,10 +60,11 @@ namespace Game_DungeonCrawler.Model
         public int Health
         {
             get { return _health; }
-            set { 
+            set
+            {
                 _health = value;
                 OnPropertyChanged(nameof(Health));
-            
+
             }
         }
         public int XP

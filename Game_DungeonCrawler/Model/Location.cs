@@ -77,7 +77,7 @@ namespace Game_DungeonCrawler.Model
             get { return _itemAcq; }
             set { _itemAcq = value; }
             }
-        public ObservableCollection<GameItemQuantity> GameItems { get; set; }
+        public ObservableCollection<GameItemQuantity> GameItems { get { return _gameItems; } set {_gameItems = value; } }
         public int RequiredItemId { get; set; }
         #endregion
 
