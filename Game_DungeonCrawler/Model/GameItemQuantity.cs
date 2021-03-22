@@ -8,8 +8,8 @@ namespace Game_DungeonCrawler.Model
 {
     public class GameItemQuantity
     {
-        public GameItem _gameItem { get; set; }
-        public int _quantity { get; set; }
+        public GameItem GameItem { get; set; }
+        public int Quantity { get; set; }
 
         public GameItemQuantity()
         {
@@ -17,8 +17,8 @@ namespace Game_DungeonCrawler.Model
         }
         public GameItemQuantity(GameItem gameItem, int quantity)
         {
-            _gameItem = gameItem;
-            _quantity = quantity;
+            GameItem = gameItem;
+            Quantity = quantity;
         }
     }
 }

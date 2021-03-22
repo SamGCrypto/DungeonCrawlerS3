@@ -32,7 +32,7 @@ namespace Game_DungeonCrawler.Model
         {
             get { return _mapLocation[_currentLocationCoordinates.Row, _currentLocationCoordinates.Column, _currentLocationCoordinates.Level]; }
         }
-        public List<GameItem> StandardItems { get; set; }
+        public List<GameItem> StandardItems { get {return _standardItems; } set {_standardItems = value; } }
 
         public int MaxRow
         {

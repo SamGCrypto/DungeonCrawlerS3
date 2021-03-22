@@ -27,7 +27,9 @@ namespace Game_DungeonCrawler.Data
                 Lives = 3,
                 Inventory = new ObservableCollection<GameItemQuantity>()
                 {
-                    new GameItemQuantity(GameItemId(1002), 3)
+                    new GameItemQuantity(GameItemId(1002), 3),
+                    new GameItemQuantity(GameItemId(2001), 1)
+
                 }
             };
         }
@@ -119,7 +121,11 @@ namespace Game_DungeonCrawler.Data
                 "You see some gold littered about",
                 AccessLocation = true,
                 Msg = "You may go left right forward or back from this location.",
-                Gold = 1
+                Gold = 1,
+                GameItems = new ObservableCollection<GameItemQuantity>()
+                {
+                    new GameItemQuantity(GameItemId(2002),1)
+                }
             };
             cavernMap.MapLocation[3, 0, 1] = new Location()
             {

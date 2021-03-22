@@ -102,33 +102,33 @@ namespace Game_DungeonCrawler.Model
 
         public void AddGameItemQuantityToLocation(GameItemQuantity selectedItemQuantity)
         {
-            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i._gameItem.Id == selectedItemQuantity._gameItem.Id);
+            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i.GameItem.Id == selectedItemQuantity.GameItem.Id);
             if(gameItemQ == null)
             {
                 GameItemQuantity newGameItemQ = new GameItemQuantity();
-                newGameItemQ._gameItem = selectedItemQuantity._gameItem;
-                newGameItemQ._quantity = 1;
+                newGameItemQ.GameItem = selectedItemQuantity.GameItem;
+                newGameItemQ.Quantity = 1;
 
                 _gameItems.Add(newGameItemQ);
             }
             else
             {
-                gameItemQ._quantity++;
+                gameItemQ.Quantity++;
             }
             UpdateGameItemsForLocation();
         }
 
         public void RemoveGameItemQFromLoc(GameItemQuantity selectedGameItemQ)
         {
-            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i._gameItem.Id == selectedGameItemQ._gameItem.Id);
+            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i.GameItem.Id == selectedGameItemQ.GameItem.Id);
             if (gameItemQ != null)
             {
-                if(selectedGameItemQ._quantity == 1){
+                if(selectedGameItemQ.Quantity == 1){
                     _gameItems.Remove(gameItemQ);
                 }
                 else
                 {
-                    gameItemQ._quantity--;
+                    gameItemQ.Quantity--;
                 }
             }
             UpdateGameItemsForLocation();

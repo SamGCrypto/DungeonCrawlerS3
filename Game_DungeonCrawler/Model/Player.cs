@@ -43,7 +43,7 @@ namespace Game_DungeonCrawler.Model
                 OnPropertyChanged(nameof(Lives));
             }
         }
-        public int Wealth { get; set; }
+        public int Wealth { get {return _wealth; } set {_wealth = value; } }
         public ObservableCollection<GameItemQuantity> Inventory { get { return _inventory; } set { _inventory = value; } }
         public ObservableCollection<GameItemQuantity> Potions { get { return _potions; } set { _potions = value; } }
         public ObservableCollection<GameItemQuantity> Tools { get {return _tools; } set {_tools = value; } }
@@ -71,11 +71,6 @@ namespace Game_DungeonCrawler.Model
         {
             get { return _xp; }
             set { _xp = value; }
-        }
-        public Items ItemInHand
-        {
-            get { return _itemInHand; }
-            set { _itemInHand = value; }
         }
         #endregion
         #region CONSTRUCTORS
@@ -106,47 +101,48 @@ namespace Game_DungeonCrawler.Model
             Tools.Clear();
             foreach (var gameItemQuantity in _inventory)
             {
-                if (gameItemQuantity._gameItem is Potion) Potions.Add(gameItemQuantity);
-                if (gameItemQuantity._gameItem is Tool) Tools.Add(gameItemQuantity);
+                if (gameItemQuantity.GameItem is Potion) Potions.Add(gameItemQuantity);
+                if (gameItemQuantity.GameItem is Tool) Tools.Add(gameItemQuantity);
             }
         }
         public void CalculateWealth()
         {
-            Wealth = _inventory.Sum(i => i._gameItem.Value*i._quantity);
+            Wealth = _inventory.Sum(i => i.GameItem.Value*i.Quantity);
         }
 
         public void AddGameItemToInventory(GameItemQuantity selectedItemQuantity)
         {
-            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i._gameItem.Id == selectedItemQuantity._gameItem.Id);
+            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i.GameItem.Id == selectedItemQuantity.GameItem.Id);
             if (selectedItemQuantity == null)
             {
                 GameItemQuantity newGameItemQ = new GameItemQuantity();
-                newGameItemQ._gameItem = selectedItemQuantity._gameItem;
-                newGameItemQ._quantity = 1;
+                newGameItemQ.GameItem = selectedItemQuantity.GameItem;
+                newGameItemQ.Quantity = 1;
 
                 _inventory.Add(newGameItemQ);
             }
             else
             {
-                gameItemQuantity._quantity++;
+                gameItemQuantity.Quantity++;
             }
             UpdateInventoryCat();
         }
 
         public void RemoveItemQuantityFromInventory(GameItemQuantity selectedQuantity)
         {
-            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i._gameItem.Id == selectedQuantity._gameItem.Id);
+            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i.GameItem.Id == selectedQuantity.GameItem.Id);
             if(gameItemQuantity != null)
             {
-                if(selectedQuantity._quantity == 1)
+                if(selectedQuantity.Quantity == 1)
                 {
                     _inventory.Remove(gameItemQuantity);
                 }
                 else
                 {
-                    gameItemQuantity._quantity--;
+                    gameItemQuantity.Quantity--;
                 }
             }
+            UpdateInventoryCat();
         }
         public bool LocationVisited(Location location)
         {
