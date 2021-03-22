@@ -10,7 +10,6 @@ namespace Game_DungeonCrawler.Model
     {
         public GameItem GameItem { get; set; }
         public int Quantity { get; set; }
-
         public GameItemQuantity()
         {
 

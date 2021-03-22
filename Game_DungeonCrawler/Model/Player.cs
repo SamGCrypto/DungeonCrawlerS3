@@ -23,10 +23,8 @@ namespace Game_DungeonCrawler.Model
         private int _lives;
         private int _health;
         private int _xp;
-        private int _regen;
         private int _wealth;
 
-        private Items _itemInHand;
         private JobPositionTitle _jobPosition;
 
         private List<Location> _locationsVisited;
@@ -47,11 +45,7 @@ namespace Game_DungeonCrawler.Model
         public ObservableCollection<GameItemQuantity> Inventory { get { return _inventory; } set { _inventory = value; } }
         public ObservableCollection<GameItemQuantity> Potions { get { return _potions; } set { _potions = value; } }
         public ObservableCollection<GameItemQuantity> Tools { get {return _tools; } set {_tools = value; } }
-        public int Regen
-        {
-            get { return _regen; }
-            set { _regen = value; }
-        }
+
         public JobPositionTitle JobPosition
         {
             get { return _jobPosition; }

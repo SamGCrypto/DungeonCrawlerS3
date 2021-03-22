@@ -82,9 +82,9 @@ namespace Game_DungeonCrawler.Model
         #endregion
 
         #region METHOD
-        public bool IsAccessable(int playerXP, Items items)    
+        public bool IsAccessable(int playerXP)    
         {
-            return playerXP >= _xpReq ? true : false|| items == _reqItem; 
+            return playerXP >= _xpReq ? true : false; 
         }
         public void UpdateGameItemsForLocation()
         {

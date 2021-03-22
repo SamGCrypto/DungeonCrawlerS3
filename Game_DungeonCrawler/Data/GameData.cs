@@ -21,7 +21,6 @@ namespace Game_DungeonCrawler.Data
                 Age = 20,
                 JobPosition = Player.JobPositionTitle.Adventurer,
                 Training = Player.TrainKnow.Swordsmanship,
-                ItemInHand = Player.Items.Sword,
                 Health = 200,
                 XP = 0,
                 Lives = 3,
@@ -136,7 +135,8 @@ namespace Game_DungeonCrawler.Data
                 "You see some gold littered about",
                 AccessLocation = false,
                 Msg = "You may go left right forward or back from this location.",
-                XPRequired = 50
+                XPRequired = 50,
+                RequiredItemId=2002
             };
             return cavernMap;
 
