@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,9 +24,15 @@ namespace Game_DungeonCrawler.Model
         private int _health;
         private int _xp;
         private int _regen;
+        private int _wealth;
 
         private Items _itemInHand;
         private JobPositionTitle _jobPosition;
+
+        private List<Location> _locationsVisited;
+        private ObservableCollection<GameItemQuantity> _inventory;
+        private ObservableCollection<GameItemQuantity> _potions;
+        private ObservableCollection<GameItemQuantity> _tools;
         #endregion
         #region PROPERTIES
         public int Lives
@@ -36,6 +43,10 @@ namespace Game_DungeonCrawler.Model
                 OnPropertyChanged(nameof(Lives));
             }
         }
+        public int Wealth { get; set; }
+        public ObservableCollection<GameItemQuantity> Inventory { get; set; }
+        public ObservableCollection<GameItemQuantity> Potions { get; set; }
+        public ObservableCollection<GameItemQuantity> Tools { get; set; }
         public int Regen
         {
             get { return _regen; }
@@ -67,7 +78,13 @@ namespace Game_DungeonCrawler.Model
         }
         #endregion
         #region CONSTRUCTORS
-
+        public Player()
+        {
+            _locationsVisited = new List<Location>();
+            _inventory = new ObservableCollection<GameItemQuantity>();
+            _tools = new ObservableCollection<GameItemQuantity>();
+            _potions = new ObservableCollection<GameItemQuantity>();
+        }
         #endregion
         #region METHODS
 
@@ -81,6 +98,58 @@ namespace Game_DungeonCrawler.Model
                 article = "an";
             }
             return article;
+        }
+        public void UpdateInventoryCat()
+        {
+            Potions.Clear();
+            Tools.Clear();
+            foreach (var gameItemQuantity in _inventory)
+            {
+                if (gameItemQuantity._gameItem is Potion) Potions.Add(gameItemQuantity);
+                if (gameItemQuantity._gameItem is Tool) Tools.Add(gameItemQuantity);
+            }
+        }
+        public void CalculateWealth()
+        {
+            Wealth = _inventory.Sum(i => i._gameItem.Value*i._quantity);
+        }
+
+        public void AddGameItemToInventory(GameItemQuantity selectedItemQuantity)
+        {
+            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i._gameItem.Id == selectedItemQuantity._gameItem.Id);
+            if (selectedItemQuantity == null)
+            {
+                GameItemQuantity newGameItemQ = new GameItemQuantity();
+                newGameItemQ._gameItem = selectedItemQuantity._gameItem;
+                newGameItemQ._quantity = 1;
+
+                _inventory.Add(newGameItemQ);
+            }
+            else
+            {
+                gameItemQuantity._quantity++;
+            }
+            UpdateInventoryCat();
+        }
+
+        public void RemoveItemQuantityFromInventory(GameItemQuantity selectedQuantity)
+        {
+            GameItemQuantity gameItemQuantity = _inventory.FirstOrDefault(i => i._gameItem.Id == selectedQuantity._gameItem.Id);
+            if(gameItemQuantity != null)
+            {
+                if(selectedQuantity._quantity == 1)
+                {
+                    _inventory.Remove(gameItemQuantity);
+                }
+                else
+                {
+                    gameItemQuantity._quantity--;
+                }
+            }
+        }
+        public bool LocationVisited(Location location)
+        {
+            return _locationsVisited.Contains(location);
         }
         #endregion
     }

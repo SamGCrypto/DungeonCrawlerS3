@@ -1,14 +1,20 @@
-﻿using System.Collections.ObjectModel;
-using static Game_DungeonCrawler.Model.Character;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Game_DungeonCrawler.Data;
 
 namespace Game_DungeonCrawler.Model
 {
-    public class Map:ObservableObject
+    public class Map
     {
         #region FIELDS
         private Location[,,] _mapLocation;
         private int _maxRow, _maxColumn, _lvl;
         private GameMapCoordinates _currentLocationCoordinates;
+        private List<GameItem> _standardItems;
 
         #endregion
         #region PROPERTIES
@@ -26,10 +32,11 @@ namespace Game_DungeonCrawler.Model
         {
             get { return _mapLocation[_currentLocationCoordinates.Row, _currentLocationCoordinates.Column, _currentLocationCoordinates.Level]; }
         }
+        public List<GameItem> StandardItems { get; set; }
 
         public int MaxRow
         {
-            get{ return _maxRow; }
+            get { return _maxRow; }
             set { _maxRow = value; }
         }
         public int MaxColumn
@@ -42,6 +49,17 @@ namespace Game_DungeonCrawler.Model
             get { return _lvl; }
             set { _lvl = value; }
         }
+        public ObservableCollection<Location> AccessableLocation {
+            get {
+                ObservableCollection<Location> accessibleLocation= new ObservableCollection<Location>();
+                foreach(var location in _mapLocation)
+                {
+                    accessibleLocation.Add(location);
+                }
+                return accessibleLocation;
+            }
+        }
+
         #endregion
 
         #region CONSTRUCTOR
@@ -100,10 +118,11 @@ namespace Game_DungeonCrawler.Model
             }
         }
         #endregion
+        #region CHECK REGIONS
         public Location northLoc()
         {
             Location northLoc = null;
-            if (_currentLocationCoordinates.Row <= MaxRow-1)
+            if (_currentLocationCoordinates.Row <= MaxRow - 1)
             {
                 Location nextNorthLoc = _mapLocation[_currentLocationCoordinates.Row+1, _currentLocationCoordinates.Column, _currentLocationCoordinates.Level];
                 if(nextNorthLoc != null)
@@ -179,6 +198,32 @@ namespace Game_DungeonCrawler.Model
             return lvlLoc;
         }
 
+        #endregion
+        public GameItem GameItemId(int itemId)
+        {
+            return StandardItems.FirstOrDefault(i => i.Id == itemId);
+        }
+        public string OpenRoomById(int toolId)
+        {
+            string msg = "Tool didn't work";
+            Location mapLoc = new Location();
+            for(int row = 0; row<_maxRow; row++)
+            {
+                for(int column = 0; column < _maxColumn; column++)
+                {
+                    for(int lvl = 0; lvl <_lvl; lvl++)
+                    {
+                        mapLoc = _mapLocation[row, column, lvl];
+                        if(mapLoc!=null && mapLoc.RequiredItemId == toolId)
+                        {
+                            mapLoc.AccessLocation = true;
+                            msg = $"{mapLoc.LocatName} is now accessable";
+                        }
+                    }
+                }
+            }
+            return msg;
+        }
         #endregion
     }
 }
