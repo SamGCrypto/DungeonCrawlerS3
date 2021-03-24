@@ -9,7 +9,7 @@ using static Game_DungeonCrawler.Model.Character;
 
 namespace Game_DungeonCrawler.Model
 {
-    public class Location
+    public class Location:ObservableObject
     {
         #region PROPERTIES
         protected int _Id;
@@ -24,7 +24,7 @@ namespace Game_DungeonCrawler.Model
         protected int _hpAffected;
         protected string _msg;
         protected int _gold;
-        private ObservableCollection<GameItemQuantity> _gameItems;
+        protected ObservableCollection<GameItem> _gameItem;
         #endregion
         #region FIELDS
 
@@ -33,6 +33,7 @@ namespace Game_DungeonCrawler.Model
             get { return _Id; }
             set { _Id = value; }
         }
+        public int RequiredToolById { get; set; }
         public int HPAffected
         {
             get { return _hpAffected; }
@@ -73,67 +74,51 @@ namespace Game_DungeonCrawler.Model
             get { return _gold; }
             set { _gold = value; }
         }
-        public Items itemAcq{
-            get { return _itemAcq; }
-            set { _itemAcq = value; }
-            }
-        public ObservableCollection<GameItemQuantity> GameItems { get { return _gameItems; } set {_gameItems = value; } }
-        public int RequiredItemId { get; set; }
+        public ObservableCollection<GameItem> GameItem
+        {
+            get { return _gameItem; }
+            set { _gameItem = value; }
+        }
         #endregion
 
         #region METHOD
+        public Location()
+        {
+            _gameItem = new ObservableCollection<GameItem>();
+        }
         public bool IsAccessable(int playerXP)    
         {
             return playerXP >= _xpReq ? true : false; 
         }
-        public void UpdateGameItemsForLocation()
+        public void UpdateLocationItems()
         {
-            ObservableCollection<GameItemQuantity> updatedItemLocation = new ObservableCollection<GameItemQuantity>();
-            foreach (GameItemQuantity gameItemQuantity in _gameItems)
+            ObservableCollection<GameItem> updatedLocationItems = new ObservableCollection<GameItem>();
+            foreach (GameItem GameItem in _gameItem)
             {
-                updatedItemLocation.Add(gameItemQuantity);
+                updatedLocationItems.Add(GameItem);
             }
-            GameItems.Clear();
-            foreach (GameItemQuantity gameItemQuantity in updatedItemLocation)
+            GameItem.Clear();
+            foreach(GameItem gameItem in updatedLocationItems)
             {
-                GameItems.Add(gameItemQuantity);
+                GameItem.Add(gameItem);
             }
         }
-
-        public void AddGameItemQuantityToLocation(GameItemQuantity selectedItemQuantity)
+        public void RemoveItemsFromLocation(GameItem selectedItem)
         {
-            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i.GameItem.Id == selectedItemQuantity.GameItem.Id);
-            if(gameItemQ == null)
+            if(selectedItem != null)
             {
-                GameItemQuantity newGameItemQ = new GameItemQuantity();
-                newGameItemQ.GameItem = selectedItemQuantity.GameItem;
-                newGameItemQ.Quantity = 1;
-
-                _gameItems.Add(newGameItemQ);
+                _gameItem.Remove(selectedItem);
             }
-            else
-            {
-                gameItemQ.Quantity++;
-            }
-            UpdateGameItemsForLocation();
+            UpdateLocationItems();
         }
-
-        public void RemoveGameItemQFromLoc(GameItemQuantity selectedGameItemQ)
+        public void AddGameItemToLocation(GameItem selectedItem)
         {
-            GameItemQuantity gameItemQ = _gameItems.FirstOrDefault(i => i.GameItem.Id == selectedGameItemQ.GameItem.Id);
-            if (gameItemQ != null)
+            if (selectedItem != null)
             {
-                if(selectedGameItemQ.Quantity == 1){
-                    _gameItems.Remove(gameItemQ);
-                }
-                else
-                {
-                    gameItemQ.Quantity--;
-                }
+                _gameItem.Add(selectedItem);
             }
-            UpdateGameItemsForLocation();
+            UpdateLocationItems();
         }
-
 
         public void Move(Location location)
         {

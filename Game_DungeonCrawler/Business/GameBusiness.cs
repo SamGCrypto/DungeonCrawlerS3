@@ -14,8 +14,6 @@ namespace Game_DungeonCrawler.Business
     {
         GameSessionViewModel _gameSessionViewModel;
         Player _player = new Player();
-        Map _gameMap;
-        GameMapCoordinates _initialLocCoords;
 
         public GameBusiness()
         {
@@ -25,8 +23,6 @@ namespace Game_DungeonCrawler.Business
        
         public void InitializeDataSet()
         {
-            _gameMap = GameData.GameMap();
-            _initialLocCoords = GameData.InitialGameLocation();
             _player = GameData.PlayerInfo();
         }
         public void ShowView()

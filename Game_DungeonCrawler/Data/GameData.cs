@@ -20,21 +20,15 @@ namespace Game_DungeonCrawler.Data
                 Name = "Andrew",
                 Age = 20,
                 JobPosition = Player.JobPositionTitle.Adventurer,
-                Training = Player.TrainKnow.Swordsmanship,
+                Training = Player.TrainKnow.Swordsmanship,  
                 Health = 200,
                 XP = 0,
                 Lives = 3,
-                Inventory = new ObservableCollection<GameItemQuantity>()
+                Inventory = new ObservableCollection<GameItem>()
                 {
-                    new GameItemQuantity(GameItemId(1002), 3),
-                    new GameItemQuantity(GameItemId(2001), 1)
-
+                    GameItemById(1002)
                 }
             };
-        }
-        private static GameItem GameItemId(int id)
-        {
-            return StandardItems().FirstOrDefault(i => i.Id == id);
         }
         public static List<string> StartingMessage()
         {
@@ -44,11 +38,14 @@ namespace Game_DungeonCrawler.Data
                 "\t choose your path wisely."
             };
         }
+        private static GameItem GameItemById(int id)
+        {
+            return StandardItems().FirstOrDefault(i => i.Id == id);
+        }
         public static GameMapCoordinates InitialGameLocation()
         {
-            return new GameMapCoordinates() { Row = 0, Column = 0, Level = 0 };
-        }
-
+            return new GameMapCoordinates(){Row = 0, Column=0, Level=0};
+        }   
         public static Map GameMap()
         {
             int Row = 5;
@@ -56,6 +53,8 @@ namespace Game_DungeonCrawler.Data
             int Levels = 2;
 
             Map cavernMap = new Map(Row, Column, Levels);
+
+            cavernMap.StandardItems = StandardItems();
 
             cavernMap.MapLocation[0, 0, 0] = new Location()
             {
@@ -66,9 +65,10 @@ namespace Game_DungeonCrawler.Data
                 AccessLocation = true,
                 XPGained = 10,
                 Msg = "To rescue the village you must defeat the goblin king.",
-                GameItems = new ObservableCollection<GameItemQuantity>
+                GameItem = new ObservableCollection<GameItem>
                 {
-                    new GameItemQuantity(GameItemId(1001),2)
+                    GameItemById(1001),
+                    GameItemById(1001)
                 }
             };
             cavernMap.MapLocation[1, 0, 0] = new Location()
@@ -82,7 +82,7 @@ namespace Game_DungeonCrawler.Data
                 XPGained = 13,
                 Msg = "Where the young warriors fall, you soon must surpass or perish. Continue Forward.",
                 Gold = 10
-            };
+             };
             cavernMap.MapLocation[2, 0, 0] = new Location()
             {
                 Id = 3,
@@ -105,10 +105,8 @@ namespace Game_DungeonCrawler.Data
                 AccessLocation = true,
                 HPAffected = 13,
                 Msg = "It would be wise to return back from this place before you perish.",
-                itemAcq = Character.Items.pickaxe,
-                GameItems = new ObservableCollection<GameItemQuantity>
-                {
-                    new GameItemQuantity(GameItemId(1002),1)
+                GameItem = new ObservableCollection<GameItem> {
+                    GameItemById(2002)
                 }
             };
             cavernMap.MapLocation[3, 0, 0] = new Location()
@@ -120,11 +118,7 @@ namespace Game_DungeonCrawler.Data
                 "You see some gold littered about",
                 AccessLocation = true,
                 Msg = "You may go left right forward or back from this location.",
-                Gold = 1,
-                GameItems = new ObservableCollection<GameItemQuantity>()
-                {
-                    new GameItemQuantity(GameItemId(2002),1)
-                }
+                Gold = 1
             };
             cavernMap.MapLocation[3, 0, 1] = new Location()
             {
@@ -136,7 +130,10 @@ namespace Game_DungeonCrawler.Data
                 AccessLocation = false,
                 Msg = "You may go left right forward or back from this location.",
                 XPRequired = 50,
-                RequiredItemId=2002
+                RequiredToolById = 2002,
+                GameItem = new ObservableCollection<GameItem> {
+                    GameItemById(2001)
+                }
             };
             return cavernMap;
 
@@ -145,13 +142,12 @@ namespace Game_DungeonCrawler.Data
         {
             return new List<GameItem>()
             {
-                new Potion(1001,"Minor health potion",10,0,0,"A minor healing potion that can regen 10 pts of health",0),
-                new Potion(1002,"Medium health potion",30,0,0,"A medium range healing potion that can regen 10 pts of health",0),
-                new Potion(1003,"Massive health potion",100,0,0,"A minor healing potion that can regen 10 pts of health",0),
-                new Tool(2001, "Sword",100, Tool.UseAffect.KILL_ENEMY, "A legendary weapon used to eliminate many enemies.", -10, "Swing the blade"),
-                new Tool(2002, "Cross",120, Tool.UseAffect.HEAL_PLAYER, "A legendary restoring item.", 110, "Restore health")
+                new Potion(1001, "Minor Health", 10, 20,0,"A minor healing potion restoring 20 pts of health", 10),
+                new Potion(1002,"Medium Health",20,40,0,"A stronger healing potion restoring 40 pts of health",30),
+                new Potion(1003,"Large Health",50,150,0,"The Strongest healing potion restoring 150 pts of heatlh",100),
+                new Tool(2001,"Mythic Sword Sword",100, Tool.UseAffect.KILL_ENEMY,"A fragile sword no being can withstand a single blow against",100,"Enemy has been slain"),
+                new Tool(2002,"The Cross of the Angels",100,Tool.UseAffect.HEAL_PLAYER,"A powerful healing artifact, capable of restroing a life and unlocking a place",200,"A life has been grante")
             };
         }
-
     }
 }

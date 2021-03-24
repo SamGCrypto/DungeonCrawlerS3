@@ -67,7 +67,6 @@
     <Compile Include="Business\GameBusiness.cs" />
     <Compile Include="Data\GameData.cs" />
     <Compile Include="Model\GameItem.cs" />
-    <Compile Include="Model\GameItemQuantity.cs" />
     <Compile Include="Model\GameMapLocation.cs" />
     <Compile Include="Model\Location.cs" />
     <Compile Include="Model\Map.cs" />

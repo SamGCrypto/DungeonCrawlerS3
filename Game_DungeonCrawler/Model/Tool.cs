@@ -14,12 +14,13 @@ namespace Game_DungeonCrawler.Model
             KILL_ENEMY,
             HEAL_PLAYER
         }
-        public UseAffect ItemAffect{ get; set; }
+        public UseAffect ItemAffect { get; set; }
 
         public Tool(int id, string name, int value, UseAffect itemAffect, string description, int xp, string userMsg)
-            : base(id, name, description, value, xp, userMsg){
-                ItemAffect = itemAffect; 
-            }
+            : base(id, name, description, value, xp, userMsg)
+        {
+            ItemAffect = itemAffect;
+        }
 
         public override string InformationString()
         {

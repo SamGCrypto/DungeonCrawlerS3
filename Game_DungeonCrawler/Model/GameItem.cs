@@ -21,7 +21,8 @@ namespace Game_DungeonCrawler.Model
         }
         public string Information
         {
-            get{
+            get
+            {
                 return InformationString();
             }
         }

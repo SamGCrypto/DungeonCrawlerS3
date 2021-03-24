@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game_DungeonCrawler.Data;
+using static Game_DungeonCrawler.Model.Character;
 
 namespace Game_DungeonCrawler.Model
 {
-    public class Map
+    public class Map:ObservableObject
     {
         #region FIELDS
         private Location[,,] _mapLocation;
         private int _maxRow, _maxColumn, _lvl;
         private GameMapCoordinates _currentLocationCoordinates;
+        private int _reqToolid;
         private List<GameItem> _standardItems;
 
         #endregion
@@ -32,11 +29,15 @@ namespace Game_DungeonCrawler.Model
         {
             get { return _mapLocation[_currentLocationCoordinates.Row, _currentLocationCoordinates.Column, _currentLocationCoordinates.Level]; }
         }
-        public List<GameItem> StandardItems { get {return _standardItems; } set {_standardItems = value; } }
+        public List<GameItem> StandardItems
+        {
+            get{ return _standardItems; }
+            set { _standardItems = value; }
+        }
 
         public int MaxRow
         {
-            get { return _maxRow; }
+            get{ return _maxRow; }
             set { _maxRow = value; }
         }
         public int MaxColumn
@@ -49,17 +50,15 @@ namespace Game_DungeonCrawler.Model
             get { return _lvl; }
             set { _lvl = value; }
         }
-        public ObservableCollection<Location> AccessableLocation {
-            get {
-                ObservableCollection<Location> accessibleLocation= new ObservableCollection<Location>();
-                foreach(var location in _mapLocation)
-                {
-                    accessibleLocation.Add(location);
-                }
-                return accessibleLocation;
+        public int Tool_ID 
+        {
+            get { return _reqToolid; }
+            set
+            {
+                _reqToolid = value;
             }
+        
         }
-
         #endregion
 
         #region CONSTRUCTOR
@@ -118,11 +117,10 @@ namespace Game_DungeonCrawler.Model
             }
         }
         #endregion
-        #region CHECK REGIONS
         public Location northLoc()
         {
             Location northLoc = null;
-            if (_currentLocationCoordinates.Row <= MaxRow - 1)
+            if (_currentLocationCoordinates.Row <= MaxRow-1)
             {
                 Location nextNorthLoc = _mapLocation[_currentLocationCoordinates.Row+1, _currentLocationCoordinates.Column, _currentLocationCoordinates.Level];
                 if(nextNorthLoc != null)
@@ -198,27 +196,18 @@ namespace Game_DungeonCrawler.Model
             return lvlLoc;
         }
 
-        #endregion
-        public GameItem GameItemId(int itemId)
+        public string ToolOpenLocation(int toolId)
         {
-            return StandardItems.FirstOrDefault(i => i.Id == itemId);
-        }
-        public string OpenRoomById(int toolId)
-        {
-            string msg = "Tool didn't work";
-            Location mapLoc = new Location();
-            for(int row = 0; row<_maxRow; row++)
+            string msg = "The tool didn't work.";
+            Location mapLocation = new Location();
+            for(int row=0; row<_maxRow; row++)
             {
-                for(int column = 0; column < _maxColumn; column++)
+                for (int column = 0; column < _maxColumn; column++)
                 {
-                    for(int lvl = 0; lvl <_lvl; lvl++)
+                    for (int lvl = 0; lvl < _lvl; lvl++)
                     {
-                        mapLoc = _mapLocation[row, column, lvl];
-                        if(mapLoc!=null && mapLoc.RequiredItemId == toolId)
-                        {
-                            mapLoc.AccessLocation = true;
-                            msg = $"{mapLoc.LocatName} is now accessable";
-                        }
+                        mapLocation.AccessLocation = true;
+                        msg = $"{mapLocation.LocatName} is now accessable.";
                     }
                 }
             }
